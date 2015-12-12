@@ -7,5 +7,14 @@ import java.io.Serializable;
  */
 public class FlipViewModel implements Serializable {
 
-    public void
+    public int resId;
+    public float currentY;
+
+    public FlipViewModel() {
+    }
+
+    public FlipViewModel(int resId) {
+        this.resId = resId;
+
+    }
 }

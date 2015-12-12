@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:hardwareAccelerated="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.liudan.flipboard.MainActivity">
+        <activity android:name="com.liudan.flipboard.other.OtherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

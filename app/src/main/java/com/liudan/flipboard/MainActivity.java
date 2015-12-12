@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
 
 
         List<ItemViewModel> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 15; i++) {
             list.add(
                     new ItemViewModel(
                             BitmapFactory.decodeResource(this.getResources(), R.mipmap.item_bg),

@@ -1,14 +1,12 @@
 package com.liudan.flipboard.other;
 
 import android.app.Activity;
-import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.liudan.flipboard.ImageRecyclerAdapter;
-import com.liudan.flipboard.ItemViewModel;
 import com.liudan.flipboard.R;
 
 import java.util.ArrayList;
@@ -20,27 +18,27 @@ import java.util.List;
 public class OtherActivity extends Activity {
 
     private RecyclerView recyclerView;
+    private int itemHeight;
+    private int imageViewHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Point screenPoint = new Point();
+        getWindowManager().getDefaultDisplay().getSize(screenPoint);
+        final float scale = getResources().getDisplayMetrics().density;
+        itemHeight = (int) (300 * scale + 0.5f);
+        imageViewHeight = (int) (600 * scale + 0.5f);
 
-        List<ItemViewModel> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            list.add(
-                    new ItemViewModel(
-                            BitmapFactory.decodeResource(this.getResources(), R.mipmap.item_bg),
-                            R.mipmap.item_bg,
-                            iw,
-                            ih
-                    )
-            );
+        List<FlipViewModel> list = new ArrayList<>();
+        for (int i = 0; i < 15; i++) {
+            list.add(new FlipViewModel(R.mipmap.item_bg_e));
         }
 
         recyclerView = (RecyclerView) findViewById(R.id.activity_main_content_rv);
-        final ImageRecyclerAdapter adapter = new ImageRecyclerAdapter(this, list);
+        final FlipAdapter adapter = new FlipAdapter(this, list);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -54,13 +52,16 @@ public class OtherActivity extends Activity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                Log.d("delta Y", "y: " + dy);
+                Log.d("dy:", dy + "");
                 int firstPos = layoutManager.findFirstVisibleItemPosition();
                 int lastPos = layoutManager.findLastVisibleItemPosition();
                 for (int i = firstPos; i <= lastPos; i++) {
 
-                    adapter.getItem(i).setDeltaY(dy > 0 ? 1 : -1);
-
+                    FlipViewModel flipViewModel = adapter.getItem(i);
+                    if (Math.abs(imageViewHeight- itemHeight)/2 - flipViewModel.currentY > 0 || dy < 0) {
+                        flipViewModel.currentY += dy > 0 ? Math.ceil(((double)dy) / 5) : Math.floor(((double)dy) / 5);
+                        Log.d("currentY:", ""+ flipViewModel.currentY);
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }

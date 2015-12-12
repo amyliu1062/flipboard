@@ -1,11 +1,9 @@
 package com.liudan.flipboard;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.provider.Settings;
 import android.util.Log;
 
 /**
@@ -72,7 +70,7 @@ public class ItemViewModel {
 
     public boolean draw() {
         ensureInitialized();
-//        deltaY = deltaY > 0 ? 1 : -1;
+//        currentY = currentY > 0 ? 1 : -1;
         if (srcRect.top - deltaY < 0 || srcRect.bottom - deltaY > bh) {
             return false;
         }
