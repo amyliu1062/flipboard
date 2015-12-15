@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="300dp">
 
@@ -17,6 +17,11 @@
             android:src="@mipmap/ic_launcher"
             />
 
-    </LinearLayout>
+        <com.liudan.flipboard.other.CocoView
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
 
 </LinearLayout>

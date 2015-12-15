@@ -34,7 +34,7 @@ public class OtherActivity extends Activity {
 
         List<FlipViewModel> list = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
-            list.add(new FlipViewModel(R.mipmap.item_bg_e));
+            list.add(new FlipViewModel(R.mipmap.item_bg));
         }
 
         recyclerView = (RecyclerView) findViewById(R.id.activity_main_content_rv);
