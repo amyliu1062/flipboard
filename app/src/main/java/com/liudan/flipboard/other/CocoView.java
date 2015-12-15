@@ -24,8 +24,11 @@ public class CocoView extends LinearLayout {
     private Canvas canvas;
     private Paint paint;
     private boolean isChangeColor;
+    private Rect centerRect;
+    private Rect boardRect;
     private Rect currentRect;
     private TextView tickTv;
+    private View contentLayout;
 
     public CocoView(Context context) {
         this(context, null);
@@ -47,14 +50,14 @@ public class CocoView extends LinearLayout {
         canvas = new Canvas();
         paint = new Paint();
         paint.setColor(0x88FF0000);
-        final View view = View.inflate(getContext(), R.layout.item_coco, this);
-        view.setOnClickListener(new OnClickListener() {
+        contentLayout = View.inflate(getContext(), R.layout.item_coco, this);
+        contentLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateView(v);
             }
         });
-        tickTv = (TextView) view.findViewById(R.id.item_list_view_other_tick_tv);
+        tickTv = (TextView) contentLayout.findViewById(R.id.item_list_view_other_tick_tv);
         propertyValuesHolder(tickTv, isChangeColor);
 
     }
@@ -76,7 +79,7 @@ public class CocoView extends LinearLayout {
         animatorScale.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float animatorValue = (float)animatorScale.getAnimatedValue();
+                float animatorValue = (float) animatorScale.getAnimatedValue();
                 view.setAlpha(animatorValue);
                 view.setScaleX(animatorValue);
                 view.setScaleY(animatorValue);
@@ -95,7 +98,9 @@ public class CocoView extends LinearLayout {
         if (currentRect != null) {
             canvas.drawRect(currentRect, paint);
         } else {
-            currentRect = new Rect(getWidth() / 2, getHeight() / 2, getWidth() / 2, getHeight() / 2);
+            centerRect = new Rect(getWidth() / 2, getHeight() / 2, getWidth() / 2, getHeight() / 2);
+            boardRect = new Rect(0, 0, getWidth(), getHeight());
+            currentRect = centerRect;
             canvas.drawRect(currentRect, paint);
             startAnimation();
         }
@@ -104,9 +109,9 @@ public class CocoView extends LinearLayout {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     private void startAnimation() {
-        Rect startRect = isChangeColor ? new Rect(getWidth() / 2, getHeight() / 2, getWidth() / 2, getHeight() / 2) : new Rect(0, 0, getWidth(), getHeight());
-        Rect endRect = isChangeColor ? new Rect(0, 0, getWidth(), getHeight()) : new Rect(getWidth() / 2, getHeight() / 2, getWidth() / 2, getHeight() / 2);
-        ValueAnimator anim = ValueAnimator.ofObject(new RectEvaluator(), startRect, endRect);
+        Rect startRect = isChangeColor ? centerRect : boardRect;
+        Rect endRect = isChangeColor ? boardRect : centerRect;
+        ValueAnimator anim = ObjectAnimator.ofObject(new RectEvaluator(), startRect, endRect);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
